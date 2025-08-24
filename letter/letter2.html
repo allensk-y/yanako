@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gửi cậu</title>
+    <link rel="stylesheet" href="letter2.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Thư 1 -->
+        <div class="envelope-wrapper envelope-1">
+            <div class="envelope">
+                <div class="letter">
+                    <div class="text">
+                        <strong>1 ngày tốt lành U-u</strong>
+                        <p>
+                            Chúc cậu có 1 ngày thật tuyệt nhe, 
+                            hôm nay của cậu thế nào, có vui hok, 
+                            cậu có đang ổn hok ó, 
+                            có thấy mệt hay đau ở đâu hok, 
+                            tớ muốn nghe cậu kể nhiều hơn, để hiểu cậu rõ hơn nữa, 
+                            hy vọng hôm nay cậu sẽ cười thật nhiều.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="heart"></div>
+        </div>
+
+        <!-- Thư 2 -->
+        <div class="envelope-wrapper envelope-2">
+            <div class="envelope">
+                <div class="letter">
+                    <div class="text">
+                        <strong>Cố gắng nhoooooooo</strong>
+                        <p>
+                            Vào năm học mới cố gắng nhoo cậu, tớ sẽ cổ vũ cho cậu từ xa hoi, 
+                            tớ không cần cậu quan tâm đến tớ nhiều đâu, không muốn cậu xao nhãng trong việc học, 
+                            nếu có lúc bận quá, không nhắn được, thì cũng đừng lo cho tớ nhé, 
+                            t..tớ vẫn luôn ở đây... 
+                            — Univer 🌸
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="heart"></div>
+        </div>
+    </div>
+
+    <script>
+        const envelopes = document.querySelectorAll('.envelope-wrapper');
+        envelopes.forEach(env => {
+            env.addEventListener('click', () => {
+                env.classList.toggle('flap');
+            });
+        });
+    </script>
+</body>
+</html>

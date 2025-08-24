@@ -1,0 +1,252 @@
+/* test.css — Production-ready UI for UNIVER (improved) */
+
+/* =========================================
+   VARIABLES / THEME (easy to customize)
+   ========================================= */
+:root{
+  --bg: #070812;
+  --bg-2: #0b1020;
+  --text: #eaf1ff;
+  --muted: #bcd4ff;
+  --glass-bg: rgba(12,16,28,0.35);
+  --glass-border: rgba(120,160,255,0.22);
+  --accent: #8aa8ff;
+  --accent-strong: #62a8ff;
+  --success: #62ffa1;
+  --danger: #ff6b6b;
+  --glass-blur: 12px;
+
+  --radius-lg: 18px;
+  --radius-sm: 12px;
+
+  --shadow-deep: 0 18px 50px rgba(0,0,0,0.45);
+  --shadow-soft: 0 8px 30px rgba(0,0,0,0.35);
+  --input-height-min: 54px;
+}
+
+/* =========================================
+   BASE
+   ========================================= */
+* { box-sizing: border-box; }
+html,body{
+  height:100%;
+  margin:0; padding:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+/* screen-reader helper */
+.sr-only{
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
+/* =========================================
+   CANVAS LAYERS
+   ========================================= */
+/* wrapper full screen */
+.content--canvas{
+  position: fixed;
+  inset: 0;
+  z-index: 0; /* canvas below UI */
+  pointer-events: none; /* make canvases non-blocking by default */
+}
+
+/* target correct IDs used in HTML */
+#nebula, #fx{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  image-rendering: optimizeQuality;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  will-change: transform; /* hint for smoother compositing */
+}
+
+/* nebula below overlay, fx above it */
+#nebula{ z-index: 0; }
+#fx    { z-index: 1; }
+
+/* Note: pointer-events set on wrapper; if you need pointer events on fx for some tool,
+   set `#fx { pointer-events: auto; }` selectively. Inputs/Buttons live above (z-index) and will receive events. */
+
+/* =========================================
+   DOCK (glass card with inputs)
+   ========================================= */
+.dock{
+  position: fixed;
+  left: 50%;
+  bottom: clamp(12px, 5vh, 48px);
+  transform: translateX(-50%);
+  width: min(720px, 92vw);
+  padding: clamp(10px, 2.5vh, 18px);
+  display: grid;
+  gap: 12px;
+  z-index: 10; /* above canvases */
+  border-radius: var(--radius-lg);
+
+  background:
+    linear-gradient(180deg, rgba(18,22,38,0.6), rgba(12,16,28,0.4));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-deep), inset 0 0 40px rgba(120,160,255,0.04);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+/* Title */
+.dock__title{
+  font-weight: 700;
+  letter-spacing: .4px;
+  color: var(--text);
+  font-size: clamp(14px, 2.2vw, 16px);
+}
+
+.dock__inputs{
+  display: flex;              /* đổi grid -> flex để dễ canh */
+  justify-content: center;    /* căn giữa */
+  gap: clamp(8px, 1.6vw, 12px);
+}
+
+.dock__inputs input{
+  width: clamp(48px, 6vw, 62px);   /* thêm width */
+  height: clamp(48px, 6vw, 62px);  /* bằng width = vuông */
+  aspect-ratio: 1 / 1;             /* auto giữ vuông, fallback cho responsive */
+  border-radius: 12px;
+  border: 1.5px solid rgba(220,230,255,0.06);
+  background:
+    radial-gradient(120% 120% at 30% 20%, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 60%, rgba(255,255,255,0) 100%),
+    rgba(255,255,255,0.01);
+  color: var(--text);
+  font-weight: 700;
+  font-size: clamp(20px, 3.5vw, 28px);
+  text-align: center;
+  text-transform: uppercase;
+  outline: none;
+  transition: transform .12s cubic-bezier(.2,.9,.3,1),
+              box-shadow .18s ease,
+              border-color .18s ease;
+  box-shadow: 0 0 0 0 rgba(160,192,255,0);
+  caret-color: var(--accent);
+}
+
+/* Hover / Focus: use transform & subtle ring for perf */
+.dock__inputs input:hover{ transform: translateY(-3px); }
+/* Glow khi focus */
+.dock__inputs input:focus{
+  border-color: var(--accent-strong);
+  box-shadow: 0 0 12px rgba(138,168,255,0.55),
+              0 0 24px rgba(138,168,255,0.35);
+}
+
+/* Distinguish correct / wrong (keeps box-shadow subtle) */
+.dock__inputs input.correct{
+  border-color: var(--success);
+  box-shadow: 0 0 0 6px rgba(98,255,161,0.12);
+}
+.dock__inputs input.wrong{
+  border-color: var(--danger);
+  box-shadow: 0 0 0 6px rgba(255,107,107,0.12);
+  animation: shake .28s ease;
+}
+
+/* Shake keyframes (only slight translateX for perf) */
+@keyframes shake{
+  0%,100%{ transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+/* Hint and progress */
+.dock__hint, .dock__progress{
+  font-size: 13px;
+  color: var(--muted);
+  opacity: .85;
+}
+
+/* =========================================
+   FOCUS VISIBLE (accessibility)
+   ========================================= */
+:focus { outline: none; }
+:focus-visible{
+  outline: 3px solid rgba(138,168,255,0.14);
+  outline-offset: 3px;
+  border-radius: 10px;
+}
+
+/* =========================================
+   MODAL (win) — center overlay
+   ========================================= */
+.modal{
+  position: fixed; inset: 0;
+  display: grid; place-items: center;
+  background: rgba(0,0,0,0.45);
+  z-index: 60;
+  backdrop-filter: blur(3px);
+}
+.modal[hidden]{ display:none; }
+
+.modal__card{
+  width: min(520px, 92vw);
+  padding: 22px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, rgba(20,24,42,0.95), rgba(12,14,28,0.95));
+  border: 1px solid rgba(160,192,255,0.14);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.6);
+  text-align:center;
+  color: var(--text);
+}
+.modal__card h2{ margin: 6px 0 8px; font-size: 20px; }
+.modal__card p{ margin:0; opacity:.95; color:var(--muted); }
+.modal__card button{
+  margin-top: 12px;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(160,192,255,0.22);
+  background: linear-gradient(180deg, rgba(98,150,255,0.18), rgba(72,110,255,0.12));
+  color: #fff; font-weight:700;
+  cursor: pointer;
+  transition: transform .08s ease, box-shadow .12s ease, opacity .12s;
+}
+.modal__card button:hover{ transform: translateY(-3px); box-shadow: 0 10px 24px rgba(72,110,255,0.18); }
+
+/* =========================================
+   SMALL SCREEN ADJUSTMENTS
+   ========================================= */
+@media (max-width: 420px){
+  .dock{
+    width: calc(100vw - 20px);
+    padding: 12px;
+    gap: 8px;
+    bottom: 14px;
+  }
+  .dock__inputs{ gap: 8px; }
+  .dock__inputs input{ font-size: clamp(18px, 4.5vw, 22px); height: 52px; }
+  .modal__card{ padding: 18px; }
+}
+
+/* Larger screens: slightly larger shadows and spacing */
+@media (min-width: 1400px){
+  .dock{ width: min(880px, 84vw); padding: 20px; gap: 14px; }
+  .dock__inputs input{ height: 72px; font-size: 30px; border-radius: 16px; }
+}
+
+/* =========================================
+   PERFORMANCE / REDUCED MOTION
+   ========================================= */
+@media (prefers-reduced-motion: reduce){
+  * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+}
+
+/* Hint: prefer transform/opacity transitions rather than animating box-shadow frequently */
+
+
+.content--canvas { position: relative; width:100%; height:100vh; overflow:hidden; }
+.content--canvas canvas { position:absolute; left:0;top:0; width:100%; height:100%; }
+#nebula { z-index: 1; }
+#fx     { z-index: 2; pointer-events: none; }

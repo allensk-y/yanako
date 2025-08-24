@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>thất tịch</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="game/game.css">
+</head>
+<body>
+
+  <div class="content--canvas"></div>
+
+
+  <audio id="myAudio" loop>
+    <source src="chill.mp3" type="audio/mpeg">
+    Trình duyệt của bạn không hỗ trợ audio.
+  </audio>
+
+  <span class="circle"></span>
+  <span class="circle2"></span>
+  <div class="whole">
+    <div class="play" id="playButton"></div>
+    <div class="pause"></div>
+    <p>Song Name by Artist</p>
+    <div class="soundWaves">
+      <div class="line1" style="--i:1;"></div>
+      <div class="line2" style="--i:2;"></div>
+      <div class="line3" style="--i:3;"></div>
+      <div class="line4" style="--i:4;"></div>
+      <div class="line5" style="--i:5;"></div>
+    </div>
+  </div>
+
+  <!-- Chỉ một cụm nhỏ, không phá layout trang -->
+  <!-- Cụm nút ở giữa màn hình -->
+  <div id="star-wrap">
+    <button id="starBtn" class="star-btn"><span class="ico">⭐</span> Star</button>
+    <button id="startGameBtn" class="start-btn" style="display: none;">🚀 Start</button>
+  </div>
+
+
+    <!-- 🔥 GẮN CỤM NÀY VÀO ĐÂY NÈ 🔥 -->
+  <div id="loading" class="loading-overlay">
+    <svg fill="hsl(228, 97%, 42%)" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="64" height="64">
+      <path d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z"/>
+      <rect x="11" y="6" rx="1" width="2" height="7">
+        <animateTransform attributeName="transform" type="rotate" dur="9s" values="0 12 12;360 12 12" repeatCount="indefinite"/>
+      </rect>
+      <rect x="11" y="11" rx="1" width="2" height="9">
+        <animateTransform attributeName="transform" type="rotate" dur="0.75s" values="0 12 12;360 12 12" repeatCount="indefinite"/>
+      </rect>
+    </svg>
+      <p class="loading-text">nhìn 1 tí chứ nhỉ U-u</p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/simplex-noise@2.4.0/simplex-noise.min.js"></script>
+
+  <script src="script2.js"></script>
+  <script src="game/game.js"></script>
+</body>
+</html>
+
+
+

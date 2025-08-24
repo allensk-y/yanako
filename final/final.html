@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chặng cuối ròi</title>
+  <link rel="stylesheet" href="final.css" />
+</head>
+<body>
+  <!-- single about block - giữ style CSS cũ -->
+  <div class="about">
+    <!-- dùng div thay a để tránh nhảy link; CSS background-image vẫn áp dụng -->
+    <div class="bg_links social portfolio" data-msg="nhớ cậu">
+      <span class="icon"></span>
+    </div>
+    <div class="bg_links social dribbble" data-msg="thương cậu">
+      <span class="icon"></span>
+    </div>
+    <div class="bg_links social linkedin" data-msg="yêu cậu">
+      <span class="icon"></span>
+    </div>
+    <div class="bg_links logo"></div>
+  </div>
+
+  <div class="content">
+    <div class="planet">
+      <div class="ring"></div>
+      <div class="cover-ring"></div>
+      <div class="spots">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+    <p>loading</p>
+  </div>
+
+  <!-- popup message element (BẮT BUỘC phải có) -->
+  <div id="msgBox" class="msg-box hidden" aria-live="polite">
+    <p id="msgText"></p>
+  </div>
+
+  <!-- JS: đặt cuối body -->
+  <script>
+    // hàm showMessage (giữ nguyên / nâng level nhẹ)
+    function showMessage(text) {
+      const box = document.getElementById("msgBox");
+      const msg = document.getElementById("msgText");
+      if (!box || !msg) return; // an toàn nếu DOM thiếu
+
+      msg.textContent = text;
+      box.classList.remove("hidden");          // show
+      box.setAttribute('aria-hidden', 'false');
+
+      // tự ẩn sau 2s, nếu bấm thêm thì reset timer
+      if (box._hideTimer) clearTimeout(box._hideTimer);
+      box._hideTimer = setTimeout(() => {
+        box.classList.add("hidden");
+        box.setAttribute('aria-hidden', 'true');
+      }, 2000);
+    }
+
+    // gắn event cho tất cả .about .social (dù là div hoặc a)
+    document.addEventListener('DOMContentLoaded', () => {
+      const socials = document.querySelectorAll('.about .social');
+      socials.forEach(el => {
+        // nếu thằng này vẫn là <a> và có href, ngăn default để khỏi mở link:
+        el.addEventListener('click', (e) => {
+          if (e.target && e.target.closest && e.target.closest('a')) {
+            e.preventDefault();
+          }
+          const msg = el.dataset.msg || '💌'; // lấy data-msg nếu có
+          showMessage(msg);
+          // hiệu ứng nhỏ: bật class để thay đổi style (nếu muốn)
+          el.classList.add('active-click');
+          setTimeout(()=> el.classList.remove('active-click'), 350);
+        });
+      });
+    });
+
+      // đợi 30 giây (30000 ms) rồi chuyển sang letter2.html
+    setTimeout(() => {
+      window.location.href = "../letter/letter2.html";
+    }, 30000);
+  </script>
+</body>
+</html>

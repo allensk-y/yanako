@@ -1,0 +1,331 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    background: radial-gradient(circle at top, #0b0f3d 0%, #000010 100%);
+    overflow: hidden;
+}
+
+.whole {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px;
+    border-radius: 25px;
+    border: 2px solid #6ef5ff;
+    background: rgba(5, 15, 40, 0.7);
+    backdrop-filter: blur(8px);
+    box-shadow: 
+        0 0 15px #6ef5ff77,
+        0 0 30px #9b7dff66,
+        0 0 50px #ff8ed166,
+        0 0 80px #6ef5ff33 inset;
+    animation: glowPulse 3s infinite alternate;
+}
+
+@keyframes glowPulse {
+    0% { box-shadow: 
+        0 0 15px #6ef5ff77,
+        0 0 30px #9b7dff66,
+        0 0 50px #ff8ed166,
+        0 0 80px #6ef5ff33 inset; }
+    50% { box-shadow: 
+        0 0 25px #6ef5ffaa,
+        0 0 50px #9b7dff88,
+        0 0 70px #ff8ed1aa,
+        0 0 100px #6ef5ff55 inset; }
+    100% { box-shadow: 
+        0 0 15px #6ef5ff77,
+        0 0 30px #9b7dff66,
+        0 0 50px #ff8ed166,
+        0 0 80px #6ef5ff33 inset; }
+}
+
+.play {
+    width: 0;
+    height: 0;
+    border-bottom: 15px solid transparent;
+    border-right: 3px solid transparent;
+    border-top: 15px solid transparent;
+    border-left: 20.5px solid #8ef0ff; /* màu play vũ trụ */
+    margin-left: 1.5em;
+    cursor: pointer;
+    opacity: 1;
+    filter: drop-shadow(0 0 10px #8ef0ff);
+    transition: transform 0.3s;
+}
+.play:hover {
+    transform: scale(1.1);
+    border-left-color: #ff8ed1;
+}
+
+.play.active {
+    opacity: 0;
+}
+
+.pause {
+    width: 17px;
+    height: 25px;
+    z-index: -1; /* giữ nguyên cơ chế gốc */
+    background: transparent;
+    transform: translateX(-25px);
+    border-left: 4px solid #8ef0ff;
+    border-right: 4px solid #8ef0ff;
+    cursor: pointer;
+    opacity: 0;
+    filter: drop-shadow(0 0 10px #8ef0ff);
+    transition: transform 0.3s, opacity 0.3s;
+}
+.pause.active {
+    opacity: 1;
+}
+
+p {
+    color: #cce7ff; /* chữ sáng nhẹ kiểu sao */
+    font-family: 'Lato', sans-serif;
+    font-size: 20px;
+    margin: 1.5em 1.5em 1.5em 0.3em;
+    text-shadow: 0 0 5px #9b7dff, 0 0 10px #6ef5ff;
+}
+
+.soundWaves {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    display: inline-flex;
+    justify-content: space-between;
+    margin-right: 1em;
+    z-index: 3;
+    transform: rotate(180deg);
+}
+
+.line1, .line2, .line3, .line4, .line5 {
+    background: linear-gradient(123deg, #9b7dff 30%, #6ef5ff 50%, #ff8ed1 70%);
+    background-size: 700%;
+    height: 40px;
+    width: 6px;
+    animation: upDown 1s linear infinite, colourAnimate 4s linear infinite;
+    animation-delay: calc(var(--i) * -0.25s);
+    transition: all 1.5s;
+    opacity: 0;
+    border-radius: 3px;
+    filter: drop-shadow(0 0 10px #6ef5ff);
+}
+
+.line1.active, .line2.active, .line3.active, .line4.active, .line5.active {
+    opacity: 1;
+}
+
+@keyframes colourAnimate {
+    0% { background-position: 0 0; }
+    100% { background-position: 700% 0; }
+}
+
+@keyframes upDown {
+    0% { height: 10px; }
+    50% { height: 40px; }
+    100% { height: 10px; }
+}
+
+
+
+
+
+
+
+
+/* Đặt cụm nút ở giữa màn hình, chiếm đúng kích thước của nó */
+#star-wrap{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  z-index: 9999;
+}
+
+/* Nút Star — dùng biến CSS để JS đổi màu mượt mà */
+.star-btn{
+  --g1: #8e2de2;         /* sẽ bị JS cập nhật mỗi lần bấm */
+  --g2: #4a00e0;
+  --mx: 50%;
+  --my: 50%;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 32px;
+  border: none;
+  border-radius: 40px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--g1), var(--g2));
+  box-shadow:
+    0 0 18px rgba(150,120,255,0.6),
+    0 0 36px rgba(100,200,255,0.35);
+  transition: transform .25s ease, box-shadow .3s ease, background .5s ease;
+  user-select: none;
+  overflow: hidden;
+}
+.star-btn .ico{ filter: drop-shadow(0 0 6px rgba(255,255,255,0.6)); }
+
+.star-btn:hover{
+  transform: scale(1.06);
+  box-shadow:
+    0 0 22px rgba(255,150,255,0.85),
+    0 0 50px rgba(140,220,255,0.7);
+}
+
+/* highlight chạy theo vị trí chuột */
+.star-btn::after{
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 40px;
+  background:
+    radial-gradient(120px 80px at var(--mx) var(--my),
+      rgba(255,255,255,0.28), transparent 60%);
+  opacity: .0;
+  transition: opacity .2s ease;
+  pointer-events: none;
+}
+.star-btn:hover::after{ opacity: .9; }
+
+.star-btn:disabled{
+  opacity: .65;
+  cursor: not-allowed;
+}
+
+/* Popup: xuất hiện NGAY TRÊN NÚT */
+.popup{
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  padding: 12px 18px;
+  border-radius: 16px;
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  animation: popFade 2.8s ease forwards;
+  box-shadow:
+    0 4px 24px rgba(255,255,255,0.25),
+    0 0 40px rgba(110,245,255,0.25);
+  backdrop-filter: blur(10px);
+  z-index: 1;
+}
+
+/* mũi tên nhỏ chỉ xuống nút */
+.popup::after{
+  content:"";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 8px solid transparent;
+  border-top-color: rgba(255,255,255,0.2);
+}
+
+@keyframes popFade{
+  0%   { opacity: 0; transform: translateX(-50%) translateY(16px) scale(.95); }
+  12%  { opacity: 1; transform: translateX(-50%) translateY(0)    scale(1); }
+  85%  { opacity: 1; transform: translateX(-50%) translateY(0)    scale(1); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-8px) scale(.98); }
+}
+
+
+/* Nút Start — hiện ra sau khi hết lời nhắn */
+.start-btn {
+  margin-top: 20px;
+  display: inline-block;
+  padding: 14px 36px;
+  border-radius: 50px;
+  border: none;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  background: linear-gradient(135deg, #ff8ed1, #9b7dff);
+  box-shadow:
+    0 0 20px rgba(255,120,220,0.6),
+    0 0 40px rgba(150,120,255,0.45);
+  transition: transform 0.25s ease, box-shadow 0.3s ease;
+}
+
+.start-btn:hover {
+  transform: scale(1.08);
+  box-shadow:
+    0 0 28px rgba(255,160,255,0.9),
+    0 0 60px rgba(160,200,255,0.75);
+}
+
+
+
+
+
+
+
+/* Loading overlay */
+#loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,20,0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  z-index: 10000;
+}
+
+/* Spinner tròn xoay */
+.spinner {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner svg {
+  width: 100%;
+  height: 100%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 0 8px #6ef5ff, 0 0 16px #9b7dff;
+  letter-spacing: 1px;
+}
+
+/* Ẩn mặc định */
+.hidden {
+  display: none;
+}
+
+
+
+
